@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рефлексия по уроку</title>
+    <style>
+        :root {
+            --primary-color: #2ecc71;
+            --bg-color: #f8faff;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card-bg);
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        h1 { margin-bottom: 10px; font-size: 24px; }
+        p.subtitle { color: var(--text-muted); margin-bottom: 30px; font-size: 14px; }
+
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 15px; }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #edf2f7;
+            border-radius: var(--border-radius);
+            background-color: #fcfdfe;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        /* Уровень понимания */
+        .rating-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .rating-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: var(--border-radius);
+            background: #f8f9fa;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--text-muted);
+            transition: 0.3s;
+        }
+
+        .rating-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .rating-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        /* Сетка для вопросов и настроения */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* Карточки настроения */
+        .mood-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 10px;
+        }
+
+        .mood-card {
+            border: 1px solid #edf2f7;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .mood-card:hover { background-color: #f0fff4; }
+        .mood-card.active {
+            border-color: var(--primary-color);
+            background-color: #f0fff4;
+            box-shadow: 0 0 0 1px var(--primary-color);
+        }
+
+        .mood-icon { font-size: 20px; display: block; margin-bottom: 5px; }
+        .mood-title { font-weight: bold; font-size: 14px; display: block; }
+        .mood-desc { font-size: 11px; color: var(--text-muted); }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 30px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Рефлексия по уроку</h1>
+    <p class="subtitle">Заполни небольшую анкету, чтобы помочь учителю сделать уроки лучше.</p>
+
+    <div class="form-group">
+        <label>Как тебя зовут?</label>
+        <input type="text" id="userName" placeholder="Имя Фамилия">
+    </div>
+
+    <div class="form-group">
+        <label>Тема урока</label>
+        <input type="text" id="lessonTopic" value="Пример рефлексии">
+    </div>
+
+    <div class="form-group">
+        <label>Уровень понимания (1-5)</label>
+        <div class="rating-container" id="ratingContainer">
+            <button class="rating-btn" data-value="1">1</button>
+            <button class="rating-btn" data-value="2">2</button>
+            <button class="rating-btn active" data-value="3">3</button>
+            <button class="rating-btn" data-value="4">4</button>
+            <button class="rating-btn" data-value="5">5</button>
+        </div>
+        <div class="rating-labels">
+            <span>Ничего не понял</span>
+            <span>Я эксперт</span>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <div class="form-group">
+            <label>Что было интересным?</label>
+            <textarea id="interesting" rows="3" placeholder="Самый классный факт..."></textarea>
+        </div>
+        <div class="form-group">
+            <label>Что было сложным?</label>
+            <textarea id="difficult" rows="3" placeholder="Что вызвало трудности..."></textarea>
+        </div>
+    </div>
+
+    <label>Твоё настроение</label>
+    <div class="mood-grid" id="moodGrid">
+        <div class="mood-card" onclick="selectMood(this)" data-mood="Митохондрия">
+            <span class="mood-icon">⚡</span>
+            <span class="mood-title">Митохондрия</span>
+            <span class="mood-desc">Полн(а) энергии</span>
+        </div>
+        <div class="mood-card" onclick="selectMood(this)" data-mood="Сова">
+            <span class="mood-icon">🦉</span>
+            <span class="mood-title">Сова</span>
+            <span class="mood-desc">Мудрый и внимательный</span>
+        </div>
+        <div class="mood-card" onclick="selectMood(this)" data-mood="Хамелеон">
+            <span class="mood-icon">🦎</span>
+            <span class="mood-title">Хамелеон</span>
+            <span class="mood-desc">Адаптируюсь, но сложно</span>
+        </div>
+        <div class="mood-card" onclick="selectMood(this)" data-mood="Ленивец">
+            <span class="mood-icon">🦥</span>
+            <span class="mood-title">Ленивец</span>
+            <span class="mood-desc">Медленно перевариваю</span>
+        </div>
+        <div class="mood-card" onclick="selectMood(this)" data-mood="Кактус">
+            <span class="mood-icon">🌵</span>
+            <span class="mood-title">Кактус</span>
+            <span class="mood-desc">Не подходи (сложно)</span>
+        </div>
+    </div>
+
+    <button class="submit-btn" onclick="submitReflection()">Отправить ответ</button>
+</div>
+
+<script>
+    // Переменные для хранения текущего выбора
+    let selectedRating = "3";
+    let selectedMood = "";
+
+    // Логика переключения кнопок рейтинга
+    const ratingBtns = document.querySelectorAll('.rating-btn');
+    ratingBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            ratingBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedRating = btn.getAttribute('data-value');
+        });
+    });
+
+    // Логика выбора настроения
+    function selectMood(element) {
+        const cards = document.querySelectorAll('.mood-card');
+        cards.forEach(card => card.classList.remove('active'));
+        element.classList.add('active');
+        selectedMood = element.getAttribute('data-mood');
+    }
+
+    // Функция сбора итогов
+    function submitReflection() {
+        const name = document.getElementById('userName').value;
+        const topic = document.getElementById('lessonTopic').value;
+        const interesting = document.getElementById('interesting').value;
+        const difficult = document.getElementById('difficult').value;
+
+        if (!name) {
+            alert("Пожалуйста, введи своё имя!");
+            return;
+        }
+
+        if (!selectedMood) {
+            alert("Пожалуйста, выбери своё настроение!");
+            return;
+        }
+
+        // Формируем объект с итогами
+        const results = {
+            Имя: name,
+            Тема: topic,
+            Оценка: selectedRating,
+            Интересно: interesting,
+            Сложно: difficult,
+            Настроение: selectedMood
+        };
+
+        // Вывод итогов (в реальности здесь может быть отправка на сервер)
+        console.log("Данные собраны:", results);
+        
+        alert(`Спасибо, ${results.Имя}! Твой ответ принят.\n\n` +
+              `Уровень понимания: ${results.Оценка}/5\n` +
+              `Настроение: ${results.Настроение}`);
+        
+        // Можно очистить форму после отправки
+        // location.reload(); 
+    }
+</script>
+
+</body>
+</html>
